@@ -1,4 +1,4 @@
-# Team Name
+# WLFZ
 
 Project description (~1 paragraph)
 

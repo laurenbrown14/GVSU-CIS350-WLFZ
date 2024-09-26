@@ -1,6 +1,6 @@
-Team name:
+Team name: WLFZ
 
-Team members:
+Team members: William Almado, Lauren Brown, Fortune Dessin, Zander Barth
 
 # Introduction
 
