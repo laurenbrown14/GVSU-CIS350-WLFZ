@@ -7,6 +7,8 @@ Team members: William Almado, Lauren Brown, Fortune Dessin, Zander Barth
 (In 2-4 paragraphs, describe your project concept)
 (Also define some loosely defined features of your project using bullet points)
 
+The conecpt of out project is to allow users to input certain infomartion based on their interests in different movies and we will output some ideas that they could watch. We would also give them them information on the movie, a sneak peak of it, and also check where it can be watched. The purpsoe of our project is to allow you to find something to watch without having to worry about endless scrolling. We can instead give you ideas that you will like.  
+
 ## Features
 
 - Search by genre
@@ -35,6 +37,9 @@ Team members: William Almado, Lauren Brown, Fortune Dessin, Zander Barth
 # Estimated Timeline
 
 (Figure out what your major milestones for this project will be, including how long you anticipate it _may_ take to reach that point)
+
+- I think we will primarily follow the Checkpoints example that was given to us in Blackboard and add in the times for when we need them.
+- We currently do not have an outline regarding the time for each step in the project but we will work on that soon. 
 
 # Anticipated Problems
 
