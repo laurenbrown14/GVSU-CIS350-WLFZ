@@ -1,6 +1,9 @@
-# Functional and Non Functional Requirements
+# **Functional and Non Functional Requirements**
 
+## **Overview**
 
+This document is for SRS, or Software Requirements Specification. It goes over our functional requirements by function,
+then the non functional requirements
 
 ## **Functional**
 
