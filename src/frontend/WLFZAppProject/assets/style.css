@@ -1,0 +1,138 @@
+/* Reset */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f5f5f5;
+	color: #333;
+}
+
+.container {
+	padding: 16px;
+	max-width: 600px;
+	margin: 0 auto;
+	padding-bottom: 90px;
+}
+
+/* Search bar */
+.search-bar {
+	display: flex;
+	align-items: center;
+	background-color: #e0e0e0;
+	padding: 10px;
+	border-radius: 20px;
+	margin-bottom: 16px;
+	position: relative;
+}
+
+.search-bar input {
+	flex: 1;
+	border: none;
+	background: transparent;
+	outline: none;
+	font-size: 16px;
+	padding-left: 32px; /* Space for the icon */
+}
+
+.search-bar svg {
+	position: absolute;
+	left: 12px;
+	font-size: 18px;
+	color: #555;
+}
+
+/* Recommendation box */
+.recommendation {
+	text-align: left;
+	margin-bottom: 24px;
+}
+
+.recommendation img {
+	width: 100%;
+	max-height: 200px;
+	border-radius: 12px;
+	object-fit: cover;
+	margin-bottom: 8px;
+}
+
+.recommendation h2 {
+	color: #8b0000;
+	font-size: 22px;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+.recommendation p {
+	font-size: 16px;
+	color: #444;
+}
+
+/* Section Titles */
+.section-title {
+	font-size: 18px;
+	font-weight: bold;
+	color: #8b0000;
+	margin: 16px 0;
+}
+
+/* Movie Section */
+.movie-section {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
+}
+
+.movie-section img {
+	width: 100%;
+	border-radius: 12px;
+	object-fit: cover;
+	position: relative;
+}
+
+/* Fixed bottom menu */
+.bottom-menu {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: #fff;
+	display: flex;
+	justify-content: space-around;
+	padding: 10px 0;
+	border-top: 1px solid #ccc;
+}
+
+.menu-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: #666;
+	font-size: 12px;
+}
+
+.menu-item .icon {
+	font-size: 24px;
+	margin-bottom: 4px;
+}
+
+/* Highlighted Home */
+.menu-item.home {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.menu-item.home .icon {
+	color: #ff6600;
+}
+
+/* Highlighted home button */
+.menu-item.home {
+	padding: 6px 12px;
+	border-radius: 12px;
+	background-color: #ff0000;
+	color: #fff;
+}
