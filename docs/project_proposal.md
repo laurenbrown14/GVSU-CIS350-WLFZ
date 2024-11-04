@@ -23,10 +23,16 @@ The conecpt of out project is to allow users to input certain infomartion based 
 # Anticipated Technologies
 
 (What technologies are needed to build this project)
-
-- Python
-- SQL for database query
+- Backend
+  - Python
+  - Django
+- Frontend
+  - React
+  - Javascript
 - Git
+- NPM
+- Node
+
 
 # Method/Approach
 
