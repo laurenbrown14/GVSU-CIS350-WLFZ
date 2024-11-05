@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -26,11 +25,17 @@ SECRET_KEY = 'django-insecure-uiku=5t-^d58z&ks4no#hrlsgh^0bu)nd344zrp*#u#l#7%adn
 OMDB_API_KEY = 'e2c462c2'
 OMDB_BASE_URL = 'https://www.omdbapi.com/'
 
+# TMDB API SETTINGS
+TMDB_API_KEY = ("Bearer "
+                "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZDUyZGYwYTYxNDIyZjZkZmFjMTNiZGE4NzA3OTQxMSIsIm5iZiI6MTczMDc2NTk5MC4"
+                "1Nzk5MSwic3ViIjoiNjcyOTYzNDU1MGUxNWU4ZjVhNTgwNWRmIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9."
+                "Twp8ZsqcjaxjwVr6eUSURy2Y_bP8_Is6unTzBJiESNI")
+TMDB_API_URL = "https://api.themoviedb.org/3"
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -74,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'movie_suggestion.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -84,7 +88,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -104,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -115,7 +117,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
