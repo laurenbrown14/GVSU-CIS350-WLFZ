@@ -1,6 +1,6 @@
 # WLFZ
 
-Project description (~1 paragraph)
+The conecpt of out project is to allow users to input certain infomartion based on their interests in different movies and we will output some ideas that they could watch. We would also give them them information on the movie, a sneak peak of it, and also check where it can be watched. The purpsoe of our project is to allow you to find something to watch without having to worry about endless scrolling. We can instead give you ideas that you will like.  
 
 ## Team Members and Roles
 
