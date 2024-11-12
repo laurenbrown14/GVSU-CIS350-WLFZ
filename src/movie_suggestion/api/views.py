@@ -3,7 +3,9 @@ import requests
 from django.http import HttpResponse, JsonResponse
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from movie_suggestion.settings import TMDB_API_KEY, TMDB_API_URL
+from api.models import Genre, MovieRecommendation, User
 import re
 
 # Mock the user selection for Genre
@@ -47,25 +49,39 @@ def make_tmdb_request(endpoint, params=None):
 
 
 @api_view(['GET'])
-def get_suggestion_list(request):
+def get_recommended_movie(request):
     params = {
         'page': '1',
         'language': 'en-US',
         'sort_by': 'popularity.desc',
         'include_adult': 'false',
         'include_video': 'false',
-        'with_genres': ','.join(map(str, GENRE_LIST)),
+        'with_genres': ','.join(map(str, GENRE_LIST)), # TODO: Get list from logged user.
         'vote_average.gte': '9'
     }
+    user = User.objects.get(id=1) # TODO: Get user from session
+
     data, status_code = make_tmdb_request("discover/movie", params)
-    return JsonResponse(data, safe=False, status=status_code)
+    if status_code == 200:
+        MovieRecommendation.add_recommendation(user, data['results'][0])
+
+    movie = MovieRecommendation.objects.all().values('title', 'voteAverage')
+    movie_list = list(movie)  # Convert QuerySet to list of dictionaries
+    return JsonResponse(movie_list, safe=False)
 
 
-@api_view(['GET'])
+# @api_view(['GET'])
 def get_movies_genre(request):
-    params = {'language': 'en-US'}
-    data, status_code = make_tmdb_request("genre/movie/list", params)
-    return JsonResponse(data, safe=False, status=status_code)
+    force = request.GET.get('force', 'false').lower() == 'true' # Force populating database
+
+    if force or not Genre.objects.exists():
+        params = {'language': 'en-US'}
+        data, status_code = make_tmdb_request("genre/movie/list", params)
+        if status_code == 200:
+            Genre.populate(data['genres'])
+    genres = Genre.objects.all().values('id', 'name')  # Retrieve genres as dictionaries
+    genres_list = list(genres)  # Convert QuerySet to list of dictionaries
+    return JsonResponse(genres_list, safe=False)
 
 
 @api_view(['GET'])
@@ -83,12 +99,35 @@ def fetch_movies(request):
     return JsonResponse(data, safe=False, status=status_code)
 
 
+# @api_view(['GET'])
+# def tmdb_fetch_movies2(request):
+#     params = {
+#         'append_to_response': 'images',
+#         'language': 'en-US',
+#         'include_image_language': 'en,null'
+#     }
+#     data, status_code = make_tmdb_request("movie/550", params)
+#     return JsonResponse(data, safe=False, status=status_code)
+#
+
 @api_view(['GET'])
-def tmdb_fetch_movies2(request):
-    params = {
-        'append_to_response': 'images',
-        'language': 'en-US',
-        'include_image_language': 'en,null'
+def tmdb_movie_details(request):
+
+    # https://api.themoviedb.org/3/movie/874538?language=en-US
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZDUyZGYwYTYxNDIyZjZkZmFjMTNiZGE4NzA3OTQxMSIsIm5iZiI6MTczMTM3MjE1MS45OTU0NjM0LCJzdWIiOiI2NzI5NjM0NTUwZTE1ZThmNWE1ODA1ZGYiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.WvQbFDlTfJQLZq2mYJxbrcYSpBGprTvVJgiQCcJSAO0"
     }
-    data, status_code = make_tmdb_request("movie/550", params)
+
+    # Capture all parameters from the GET request
+    params = request.GET.dict()  # Get all parameters as a dictionary
+
+    # Sanitize parameters
+    sanitized_params = sanitize_query_params(params)
+    # Check if the 'query' parameter was provided
+    if 'query' not in sanitized_params or not sanitized_params['query']:
+        return JsonResponse({'error': 'Query parameter is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    data, status_code = make_tmdb_request("search/multi", sanitized_params)
     return JsonResponse(data, safe=False, status=status_code)
