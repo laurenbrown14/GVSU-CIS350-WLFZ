@@ -31,7 +31,7 @@
 - Responsible: William and Lauren
 
 
-##Finished Tasks
+## Finished Tasks
 - Developing Frontend
 - Developing Backend
 
