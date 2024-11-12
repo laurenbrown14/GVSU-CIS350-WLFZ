@@ -31,11 +31,11 @@
 - Responsible: William and Lauren
 
 
-## Finished Tasks
+# Finished Tasks
 - Developing Frontend
 - Developing Backend
 
-## Unfinished Tasks
+# Unfinished Tasks
 - Integrating Front and Back End
 - Styling Front End
 - Storing User Searches
