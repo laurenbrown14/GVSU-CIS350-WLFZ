@@ -50,20 +50,19 @@ def make_tmdb_request(endpoint, params=None):
 
 @api_view(['GET'])
 def get_recommended_movie(request):
-    ''' Get recommended movie
+    """ Get recommended movie
         http://127.0.0.1:8000/api/movies/recommended/
-
-    '''
+    """
     params = {
         'page': '1',
         'language': 'en-US',
         'sort_by': 'popularity.desc',
         'include_adult': 'false',
         'include_video': 'false',
-        'with_genres': ','.join(map(str, GENRE_LIST)), # TODO: Get list from logged user.
+        'with_genres': ','.join(map(str, GENRE_LIST)),  # TODO: Get list from logged user.
         'vote_average.gte': '9'
     }
-    user = User.objects.get(id=1) # TODO: Get user from session
+    user = User.objects.get(id=1)  # TODO: Get user from session
 
     data, status_code = make_tmdb_request("discover/movie", params)
     if status_code == 200:
@@ -76,7 +75,7 @@ def get_recommended_movie(request):
 
 # @api_view(['GET'])
 def get_movies_genre(request):
-    force = request.GET.get('force', 'false').lower() == 'true' # Force populating database
+    force = request.GET.get('force', 'false').lower() == 'true'  # Force populating database
 
     if force or not Genre.objects.exists():
         params = {'language': 'en-US'}
@@ -116,7 +115,6 @@ def fetch_movies(request):
 
 @api_view(['GET'])
 def tmdb_movie_details(request):
-
     # https://api.themoviedb.org/3/movie/874538?language=en-US
 
     headers = {
