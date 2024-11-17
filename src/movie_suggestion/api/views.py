@@ -50,6 +50,10 @@ def make_tmdb_request(endpoint, params=None):
 
 @api_view(['GET'])
 def get_recommended_movie(request):
+    ''' Get recommended movie
+        http://127.0.0.1:8000/api/movies/recommended/
+
+    '''
     params = {
         'page': '1',
         'language': 'en-US',
