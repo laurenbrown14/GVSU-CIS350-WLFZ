@@ -65,6 +65,48 @@ def get_recommended_movie(request):
     if status_code == 200:
         MovieRecommendation.add_recommendation(user, data['results'][0])
 
+    movie = MovieRecommendation.objects.all().values('title', 'voteAverage', 'imageUrl')
+    movie_list = list(movie)  # Convert QuerySet to list of dictionaries
+    return JsonResponse(movie_list, safe=False)
+
+@api_view(['GET'])
+def get_trending_movie(request):
+    params = {
+        'page': '1',
+        'language': 'en-US',
+        'sort_by': 'popularity.desc',
+        'include_adult': 'false',
+        'include_video': 'false',
+        'with_genres': ','.join(map(str, GENRE_LIST)), # TODO: Get list from logged user.
+        'vote_average.gte': '9'
+    }
+    user = User.objects.get(id=1) # TODO: Get user from session
+
+    data, status_code = make_tmdb_request("discover/movie", params)
+    if status_code == 200:
+        MovieRecommendation.add_recommendation(user, data['results'][0])
+
+    movie = MovieRecommendation.objects.all().values('title', 'voteAverage', 'imageUrl')
+    movie_list = list(movie)  # Convert QuerySet to list of dictionaries
+    return JsonResponse(movie_list, safe=False)
+
+@api_view(['GET'])
+def get_mood_based_movie(request):
+    params = {
+        'page': '1',
+        'language': 'en-US',
+        'sort_by': 'popularity.desc',
+        'include_adult': 'false',
+        'include_video': 'false',
+        'with_genres': ','.join(map(str, GENRE_LIST)), # TODO: Get list from logged user.
+        'vote_average.gte': '9'
+    }
+    user = User.objects.get(id=1) # TODO: Get user from session
+
+    data, status_code = make_tmdb_request("discover/movie", params)
+    if status_code == 200:
+        MovieRecommendation.add_recommendation(user, data['results'][0])
+
     movie = MovieRecommendation.objects.all().values('title', 'voteAverage')
     movie_list = list(movie)  # Convert QuerySet to list of dictionaries
     return JsonResponse(movie_list, safe=False)
@@ -98,17 +140,6 @@ def fetch_movies(request):
     data, status_code = make_tmdb_request("search/multi", sanitized_params)
     return JsonResponse(data, safe=False, status=status_code)
 
-
-# @api_view(['GET'])
-# def tmdb_fetch_movies2(request):
-#     params = {
-#         'append_to_response': 'images',
-#         'language': 'en-US',
-#         'include_image_language': 'en,null'
-#     }
-#     data, status_code = make_tmdb_request("movie/550", params)
-#     return JsonResponse(data, safe=False, status=status_code)
-#
 
 @api_view(['GET'])
 def tmdb_movie_details(request):

@@ -21,21 +21,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-uiku=5t-^d58z&ks4no#hrlsgh^0bu)nd344zrp*#u#l#7%adn'
 
-# OMDB API SETTINGS
-OMDB_API_KEY = 'e2c462c2'
-OMDB_BASE_URL = 'https://www.omdbapi.com/'
-
 # TMDB API SETTINGS
 TMDB_API_KEY = ("Bearer "
                 "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZDUyZGYwYTYxNDIyZjZkZmFjMTNiZGE4NzA3OTQxMSIsIm5iZiI6MTczMDc2NTk5MC4"
                 "1Nzk5MSwic3ViIjoiNjcyOTYzNDU1MGUxNWU4ZjVhNTgwNWRmIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9."
                 "Twp8ZsqcjaxjwVr6eUSURy2Y_bP8_Is6unTzBJiESNI")
 TMDB_API_URL = "https://api.themoviedb.org/3"
+TMDB_API_URL_IMAGE = "http://image.tmdb.org/t/p"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "8d19-2600-1700-6796-e800-5dae-94b1-6f16-d437.ngrok-free.app"
+]
 
 # Application definition
 
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -89,6 +91,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "https://8d19-2600-1700-6796-e800-5dae-94b1-6f16-d437.ngrok-free.app",  # React Native local development server
+    # "http://192.168.1.x:19006",  # Replace with your actual IP address
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.hashers import make_password, check_password
 
+from movie_suggestion.settings import TMDB_API_URL_IMAGE
+
 
 class User(models.Model):
     name = models.CharField(u'Name', max_length=50, unique=True, null=False, blank=False)
@@ -84,6 +86,7 @@ class MovieRecommendation(models.Model):
     title = models.CharField(u'Title', max_length=50, null=False, blank=False)
     voteAverage = models.FloatField(u'Vote Average', null=False, blank=False, default=0.0)
     expireAt = models.DateTimeField(db_index=True, default=timezone.now() + timedelta(days=1))
+    imageUrl = models.CharField(max_length=200)
 
     def __str__(self):
         return self.title
@@ -100,6 +103,7 @@ class MovieRecommendation(models.Model):
         movie_id = movie.get('id')
         title = movie.get('title')
         vote_average = movie.get('vote_average')
+        image_url = f"{TMDB_API_URL_IMAGE}/{movie.get('poster_path')}"
 
         # Check if a recommendation exists and if it hasn't expired
         existing_recommendation = cls.objects.filter(user=user, movieId=movie_id).first()
@@ -114,7 +118,8 @@ class MovieRecommendation(models.Model):
             movieId=movie_id,
             title=title,
             voteAverage=vote_average,
-            expireAt=timezone.now() + timedelta(days=30)  # Set expiration to 30 days from now
+            expireAt=timezone.now() + timedelta(days=1),  # Set expiration to 1 day from now
+            imageUrl=image_url
         )
         recommendation.save()
         return recommendation
