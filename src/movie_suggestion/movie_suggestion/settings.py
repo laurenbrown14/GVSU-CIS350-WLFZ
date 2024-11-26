@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from .api_keys import TMDB_API_KEY, SECRET_KEY
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,15 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-uiku=5t-^d58z&ks4no#hrlsgh^0bu)nd344zrp*#u#l#7%adn'
+SECRET_KEY = SECRET_KEY
 
 # TMDB API SETTINGS
-TMDB_API_KEY = ("Bearer "
-                "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZDUyZGYwYTYxNDIyZjZkZmFjMTNiZGE4NzA3OTQxMSIsIm5iZiI6MTczMDc2NTk5MC4"
-                "1Nzk5MSwic3ViIjoiNjcyOTYzNDU1MGUxNWU4ZjVhNTgwNWRmIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9."
-                "Twp8ZsqcjaxjwVr6eUSURy2Y_bP8_Is6unTzBJiESNI")
+TMDB_API_KEY = TMDB_API_KEY
 TMDB_API_URL = "https://api.themoviedb.org/3"
-TMDB_API_URL_IMAGE = "http://image.tmdb.org/t/p"
+TMDB_API_URL_IMAGE = "http://image.tmdb.org/t/p/w500"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -35,7 +33,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "8d19-2600-1700-6796-e800-5dae-94b1-6f16-d437.ngrok-free.app"
+    "capital-cheetah-closely.ngrok-free.app"
 ]
 
 # Application definition
@@ -93,8 +91,7 @@ DATABASES = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://8d19-2600-1700-6796-e800-5dae-94b1-6f16-d437.ngrok-free.app",  # React Native local development server
-    # "http://192.168.1.x:19006",  # Replace with your actual IP address
+    "https://capital-cheetah-closely.ngrok-free.app"  # React Native local development server
 ]
 
 # Password validation

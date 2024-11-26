@@ -1,15 +1,9 @@
 from django.urls import path
-from . import views
+from .views import GetMoviesGenre, GetMovieRecommendation, GetTrendingMovies, GetMoodBasedMovies
 
 urlpatterns = [
-        path("", views.index, name="index"),
-        # path("movies/", views.fetch_movies, name="fetch_movies"),
-        path("movies/", views.fetch_movies, name="fetch_movies"),
-        path("movies/genre/", views.get_movies_genre, name="get_movies_genre"),
-        path("movies/recommended/", views.get_recommended_movie, name="get_recommended_movie"),
-        path("movies/trending/", views.get_trending_movie, name="get_trending_movie"),
-        path("movies/mood-based/", views.get_mood_based_movie, name="get_mood_based_movie"),
-
-        # path('api/process/', views.process_data, name='process_data'),
-        # path('api/simple/', views.simple_get, name='simple_get'),
+    path("movies/genres/", GetMoviesGenre.as_view(), name="GetMoviesGenre"),
+    path("movies/recommended/<int:user_id>/", GetMovieRecommendation.as_view(), name="GetMovieRecommendation"),
+    path("movies/trending/", GetTrendingMovies.as_view(), name="GetTrendingMovies"),
+    path("movies/mood-based/<int:user_id>/", GetMoodBasedMovies.as_view(), name="GetMoodBasedMovies"),
 ]
