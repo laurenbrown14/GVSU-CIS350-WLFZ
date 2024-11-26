@@ -6,11 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
     <title>Movie Suggestion</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./assets/style.css" />
 </head>
 
 <body>
-
+    <div class="content" id="data">Loading...</div>
+    <script>
+        // Listen for messages from React Native
+        window.addEventListener("message", function (event) {
+            const dataElement = document.getElementById("data");
+            try {
+                const data = JSON.parse(event.data); // Parse JSON data received
+                dataElement.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`; // Format and display data
+            } catch (error) {
+                dataElement.innerHTML = "Error displaying data";
+            }
+        });
+    </script>
     <div class="container">
         <!-- Search bar -->
         <div class="search-bar">

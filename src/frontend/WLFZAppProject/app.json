@@ -2,6 +2,15 @@
   "expo": {
     "name": "WLFZAppProject",
     "slug": "WLFZAppProject",
-    "version": "1.0.0"
-  }
+    "version": "1.0.0",
+    "newArchEnabled": true,
+    "sdkVersion": "52.0.0",
+    "entryPoint": ".vscode/exponentIndex.js",
+    "extra": {
+      "eas": {
+        "projectId": "df6ef5e8-285a-4805-bf8c-31b6f0d6ecc1"
+      }
+    }
+  },
+  "name": "wlfzappproject"
 }

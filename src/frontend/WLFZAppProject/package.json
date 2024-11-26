@@ -9,17 +9,20 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@expo/metro-runtime": "~3.2.3",
-    "expo": "~51.0.28",
-    "expo-status-bar": "~1.12.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-native": "0.74.5",
+    "@expo/metro-runtime": "~4.0.0",
+    "expo": "^52.0.7",
+    "expo-status-bar": "~2.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-native": "^0.76.2",
+    "react-native-snap-carousel": "^1.6.1",
+    "react-native-swiper": "^1.6.0",
     "react-native-web": "~0.19.10",
-    "react-native-webview": "^13.8.6"
+    "react-native-webview": "^13.12.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@react-native-community/cli": "latest"
   },
   "private": true
 }
