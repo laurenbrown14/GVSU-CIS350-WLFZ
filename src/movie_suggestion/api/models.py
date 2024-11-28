@@ -14,7 +14,7 @@ class User(models.Model):
     avatar = models.TextField(u'Avatar')
     password = models.CharField(max_length=128)
     createdAt = models.DateTimeField(db_index=True, auto_now_add=True)
-    isActive = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -113,47 +113,29 @@ class MovieRecommendation(models.Model):
         return query
 
     @classmethod
-    def add_recommendation(cls, user, movie):
-        # Adds a recommendation if it doesn't already exist for the user, or returns the existing one if it's not
-        # expired.
-        movie_id = movie.get('id')
-        title = movie.get('title')
-        vote_average = movie.get('vote_average')
-        image_url = f"{TMDB_API_URL_IMAGE}/{movie.get('poster_path')}"
-
-        # Check if there is a valid recommendation for the user
-        existing_recommendation = cls.objects.filter(user=user, expireAt__gt=timezone.now(),
-                                                     type=cls.RECOMMENDATION).first()
-
-        if existing_recommendation:
-            if existing_recommendation.expireAt > timezone.now():  # Check if not expired
-                return existing_recommendation  # Return the existing recommendation if it's not expired
-
-        # Create and save a new recommendation
-        recommendation = cls(
-            user=user,
-            movieId=movie_id,
-            title=title,
-            voteAverage=vote_average,
-            expireAt=timezone.now() + timedelta(days=1),  # Set expiration to 1 day from now
-            imageUrl=image_url,
-            type=cls.RECOMMENDATION
-        )
-        recommendation.save()
-        return recommendation
-
-    @classmethod
-    def add_movies(cls, movies, movie_type):
+    def add_movies(cls, movies, movie_type, user=None):
+        if movie_type == cls.RECOMMENDATION:
+            existing_recommendation = cls.objects.filter(user=user, expireAt__gt=timezone.now(),
+                                                         type=cls.RECOMMENDATION).first()
+            if existing_recommendation:
+                if existing_recommendation.expireAt > timezone.now():  # Check if not expired
+                    return existing_recommendation  # Return the existing recommendation if it's not expired
         # Adds movies to the database with a specified type
         movies_to_add = []
         for movie in movies:
+            if movie_type == cls.RECOMMENDATION:
+                exist = None
+                exist = cls.objects.filter(user=user, movieId=movie.get('id'))
+                if exist:
+                    continue
+
             movie_id = movie.get('id')
             title = movie.get('title')
             vote_average = movie.get('vote_average')
-            image_url = f"{TMDB_API_URL_IMAGE}/{movie.get('poster_path')}"
+            image_url = f"{TMDB_API_URL_IMAGE}{movie.get('poster_path')}"
 
             movie_instance = cls(
-                user=None,  # No specific user for general movies like trending
+                user=user if user else None,  # No specific user for general movies like trending
                 movieId=movie_id,
                 title=title,
                 voteAverage=vote_average,
@@ -162,6 +144,9 @@ class MovieRecommendation(models.Model):
                 type=movie_type
             )
             movies_to_add.append(movie_instance)
+
+            if movie_type == cls.RECOMMENDATION and not exist:
+                break
 
         cls.objects.bulk_create(movies_to_add)
         # Return the list of valid movies (not expired)
