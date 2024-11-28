@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, ActivityIndicator, StyleSheet, ScrollView, View, TextInput, RefreshControl, ImageBackground } from 'react-native';
+import { SafeAreaView, ActivityIndicator, StyleSheet, ScrollView, View, TextInput, RefreshControl, ImageBackground, StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Recommendation from './components/Recommendation';
 import Trending from './components/Trending';
 import MoodBased from './components/MoodBased';
 import BottomMenu from './components/BottomMenu';
 import { fetchRecommendations, fetchTrending, fetchMoodBased } from './services/api';
+import Login from './components/Login';
+import SplashScreen from './components/SplashScreen';
+import SignUp from './components/SignUp';
 
-export default function App() {
+
+const Stack = createStackNavigator();
+
+function Home() {
   const [recommendations, setRecommendations] = useState(null);
   const [trending, setTrending] = useState(null);
   const [moodBased, setMoodBased] = useState(null);
@@ -45,8 +53,8 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ImageBackground source={require('./assets/background.png')} style={styles.backgroundImage} imageStyle={{ opacity: 0.3 }}>
-
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
+      <ImageBackground source={require('./assets/background.png')} style={styles.backgroundImage} imageStyle={{ opacity: 0.2 }}>
         <View style={styles.searchBar}>
           <TextInput placeholder="Search by title, author or genre" style={styles.searchInput} />
         </View>
@@ -64,19 +72,32 @@ export default function App() {
           </ScrollView>
         )}
       </ImageBackground>
-        <BottomMenu />
+      <BottomMenu />
     </SafeAreaView>
   );
 }
 
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="SplashScreen">
+        <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   searchBar: {
     padding: 10,
     backgroundColor: '#f5f5f5',
+    marginTop: StatusBar.currentHeight, // Adjust for the StatusBar height
   },
   searchInput: {
     height: 40,
@@ -91,3 +112,5 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
 });
+
+export default App;

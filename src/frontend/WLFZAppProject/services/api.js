@@ -1,9 +1,19 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const API_BASE_URL = 'https://capital-cheetah-closely.ngrok-free.app/api';
 
 export const fetchRecommendations = async (userId) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/movies/recommended/1`);
-    // const response = await fetch(`${API_BASE_URL}/movies/recommended/${userId}`);
+    const token = await AsyncStorage.getItem('token'); // Retrieve the token from AsyncStorage
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await fetch(`${API_BASE_URL}/movies/recommended/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Add the token in the Authorization header
+      },
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -16,7 +26,16 @@ export const fetchRecommendations = async (userId) => {
 
 export const fetchTrending = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/movies/trending`);
+    const token = await AsyncStorage.getItem('token'); // Retrieve the token from AsyncStorage
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await fetch(`${API_BASE_URL}/movies/trending/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -27,23 +46,18 @@ export const fetchTrending = async () => {
   }
 };
 
-// export const fetchMoviesGenre = async (force = false) => {
-//   try {
-//     const response = await fetch(`${API_BASE_URL}/movies/genres/?force=${force}`);
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-//     return await response.json();
-//   } catch (error) {
-//     console.error("Error fetching movie genres:", error);
-//     throw error;
-//   }
-// };
-
 export const fetchMoodBased = async (userId) => {
   try {
-    // const response = await fetch(`${API_BASE_URL}/movies/mood-based/${userId}`);
-    const response = await fetch(`${API_BASE_URL}/movies/mood-based/1`);
+    const token = await AsyncStorage.getItem('token'); // Retrieve the token from AsyncStorage
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const response = await fetch(`${API_BASE_URL}/movies/mood-based/`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -53,3 +67,28 @@ export const fetchMoodBased = async (userId) => {
     throw error;
   }
 };
+
+
+export const login = async (email, password) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/login/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    await AsyncStorage.setItem('token', data.token); // Save the token for later use
+    
+    return data;
+  } catch (error) {
+    console.error('Error logging in:', error);
+    throw error;
+  }
+};
+
+

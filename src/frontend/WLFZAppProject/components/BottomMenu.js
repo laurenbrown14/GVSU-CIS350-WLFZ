@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const BottomMenu = () => {
+  const navigation = useNavigation(); // Access the navigation prop using this hook
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.menuItem}>
@@ -13,7 +16,10 @@ const BottomMenu = () => {
         <Ionicons name="search" size={30} color="#8b0000" style={styles.icon} />
         <Text style={styles.label}>Search</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.menuItem, styles.home]}>
+      <TouchableOpacity
+        style={[styles.menuItem, styles.home]}
+        onPress={() => navigation.navigate('Home')} // Navigate to the Home screen
+      >
         <View style={styles.homeIconContainer}>
           <Ionicons name="home" size={30} color="#fff" style={styles.homeIcon} />
           <Text style={styles.homeLabel}>Home</Text>
