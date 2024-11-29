@@ -43,3 +43,6 @@ class APITests(TestCase):
         response = self.client.get('/api/fetch-movies/', {'query': 'james bond'})
         self.assertEqual(response.status_code, 200)
         self.assertIn('results', response.json())
+
+class UnitTests(TestCase):
+    pass
