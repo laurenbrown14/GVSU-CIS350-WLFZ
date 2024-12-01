@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 
 const Recommendation = ({ data }) => {
+  const navigation = useNavigation(); // Access the navigation prop using this hook
   if (!data || data.length === 0) {
     return <Text style={styles.noData}>No recommendations available</Text>;
   }
@@ -10,18 +13,22 @@ const Recommendation = ({ data }) => {
   const movie = data[0];
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Our Recommendation</Text>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: movie.imageUrl }} style={styles.image} />
-        <View style={styles.overlay}>
-          <Text style={styles.movieTitle}>{movie.title}</Text>
-          <Text style={styles.rating}>
-            ⭐ {movie.voteAverage.toFixed(1)} {/* Format to 1 decimal */}
-          </Text>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('MovieDetails', {movieId: movie.movieId})} // Navigate to the Movie Details
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Our Recommendation</Text>
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: movie.imageUrl }} style={styles.image} />
+          <View style={styles.overlay}>
+            <Text style={styles.movieTitle} numberOfLines={1} ellipsizeMode='tail'>{movie.title}</Text>
+            <Text style={styles.rating}>
+              ⭐ {movie.voteAverage.toFixed(1)} {/* Format to 1 decimal */}
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -52,7 +59,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
     padding: 10,
     alignItems: 'flex-start', // Align items to the start of the overlay
   },

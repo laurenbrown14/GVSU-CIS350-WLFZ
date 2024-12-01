@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Trending = ({ data }) => {
+  const navigation = useNavigation();
+
   if (!data || data.length === 0) {
     return <Text style={styles.noData}>No trending movies available</Text>;
   }
@@ -11,26 +14,34 @@ const Trending = ({ data }) => {
       <Text style={styles.title}>Trending</Text>
       <View style={styles.movieSection}>
         {data.slice(0, 3).map((movie, index) => (
-          <View key={index} style={styles.movieCard}>
+          <TouchableOpacity
+            key={index}
+            style={styles.movieCard}
+            onPress={() => navigation.navigate('MovieDetails', { movieId: movie.movieId })}
+          >
             <Image source={{ uri: movie.imageUrl }} style={styles.image} />
             <View style={styles.overlay}>
               <Text style={styles.rank}>{index + 1}</Text>
             </View>
-            <Text style={styles.movieTitle}>{movie.title}</Text>
+            <Text style={styles.movieTitle} numberOfLines={2} ellipsizeMode='tail'>{movie.title}</Text>
             <Text style={styles.rating}>⭐ {movie.voteAverage.toFixed(1)}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
       <View style={styles.movieSection}>
         {data.slice(3, 6).map((movie, index) => (
-          <View key={index + 3} style={styles.movieCard}>
+          <TouchableOpacity
+            key={index + 3}
+            style={styles.movieCard}
+            onPress={() => navigation.navigate('MovieDetails', { movieId: movie.movieId })}
+          >
             <Image source={{ uri: movie.imageUrl }} style={styles.image} />
             <View style={styles.overlay}>
               <Text style={styles.rank}>{index + 4}</Text>
             </View>
             <Text style={styles.movieTitle}>{movie.title}</Text>
             <Text style={styles.rating}>⭐ {movie.voteAverage.toFixed(1)}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </View>

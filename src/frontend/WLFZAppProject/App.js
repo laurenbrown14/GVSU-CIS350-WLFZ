@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, ActivityIndicator, StyleSheet, ScrollView, View, TextInput, RefreshControl, ImageBackground, StatusBar } from 'react-native';
+import { SafeAreaView, ActivityIndicator, StyleSheet, ScrollView, View, TextInput, RefreshControl, ImageBackground, StatusBar, TouchableOpacity, Animated, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Recommendation from './components/Recommendation';
@@ -10,16 +10,19 @@ import { fetchRecommendations, fetchTrending, fetchMoodBased } from './services/
 import Login from './components/Login';
 import SplashScreen from './components/SplashScreen';
 import SignUp from './components/SignUp';
-
+import MovieDetails from './components/MovieDetails';
+import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 
-function Home() {
+function Home({ navigation }) {
   const [recommendations, setRecommendations] = useState(null);
   const [trending, setTrending] = useState(null);
   const [moodBased, setMoodBased] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [showSearchBar, setShowSearchBar] = useState(false);
+  const searchBarWidth = useState(new Animated.Value(0))[0];
 
   const loadData = async () => {
     try {
@@ -35,44 +38,64 @@ function Home() {
       console.error('Error loading data:', error);
     } finally {
       setLoading(false);
-      setRefreshing(false); // Stop refreshing animation
+      setRefreshing(false);
     }
   };
 
-  // Initial data loading
   useEffect(() => {
     loadData();
   }, []);
 
-  // Pull-to-Refresh function
   const onRefresh = async () => {
     setRefreshing(true);
-    setLoading(true); // Optional: Show loading spinner
+    setLoading(true);
     await loadData();
+  };
+
+  const toggleSearchBar = () => {
+    setShowSearchBar((prev) => !prev);
+    Animated.timing(searchBarWidth, {
+      toValue: showSearchBar ? 0 : 1,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
       <ImageBackground source={require('./assets/background.png')} style={styles.backgroundImage} imageStyle={{ opacity: 0.2 }}>
-        <View style={styles.searchBar}>
-          <TextInput placeholder="Search by title, author or genre" style={styles.searchInput} />
+        <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} style={styles.statusBar} />
+        <View style={styles.header}>
+          <Image source={require('./assets/logo.png')} style={styles.logo} />
+          <View style={styles.headerRight}>
+            <Animated.View style={[styles.searchBar, { width: searchBarWidth.interpolate({ inputRange: [0, 1], outputRange: ['0%', '75%'] }) }]}>
+              {showSearchBar && (
+                <TextInput
+                  placeholder="Search by title, author or genre"
+                  style={styles.searchInput}
+                  autoFocus={true}
+                />
+              )}
+            </Animated.View>
+            <TouchableOpacity onPress={toggleSearchBar} style={styles.searchIcon}>
+              <Ionicons name="search" size={28} color="#8b0000" />
+            </TouchableOpacity>
+          </View>
         </View>
+
+
         {loading && !refreshing ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
-          <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
+          <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
             <Recommendation data={recommendations} />
             <Trending data={trending} />
             <MoodBased data={moodBased} />
           </ScrollView>
         )}
       </ImageBackground>
-      <BottomMenu />
+      <BottomMenu onSearchIconPress={toggleSearchBar} />
     </SafeAreaView>
   );
 }
@@ -85,6 +108,7 @@ const App = () => {
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <Stack.Screen name="MovieDetails" component={MovieDetails} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -94,10 +118,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  searchBar: {
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 10,
     backgroundColor: '#f5f5f5',
-    marginTop: StatusBar.currentHeight, // Adjust for the StatusBar height
+    marginTop: StatusBar.currentHeight,
+  },
+  logo: {
+    width: 100,
+    height: 40,
+    resizeMode: 'contain',
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  statusBar: {
+    marginRight: 10,
+  },
+  searchIcon: {
+    padding: 5,
+  },
+  searchBar: {
+    overflow: 'hidden',
+    backgroundColor: '#f5f5f5',
+    paddingHorizontal: 10,
+    height: 50,
+    justifyContent: 'center',
   },
   searchInput: {
     height: 40,
@@ -106,10 +159,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: '#ccc',
-  },
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover',
+    color: '#000',
   },
 });
 
