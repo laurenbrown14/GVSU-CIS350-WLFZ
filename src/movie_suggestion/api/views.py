@@ -70,6 +70,7 @@ def get_movies_genre(request):
 
 @api_view(['GET'])
 def fetch_movies(request):
+    # /?query=james+bond
     # Capture all parameters from the GET request
     params = request.GET.dict()  # Get all parameters as a dictionary
 
