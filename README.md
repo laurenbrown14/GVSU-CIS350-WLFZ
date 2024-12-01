@@ -11,4 +11,14 @@ The conecpt of out project is to allow users to input certain infomartion based 
 
 ## Prerequisites
 
+### Frontend
+- **Node.js** (>=14.x recommended)
+- **Expo CLI** (>=5.0.0)
+- **React Native Environment**
+- **Ngrok** (optional, for tunneling API during development)
+
+### Backend
+- Python 3.13.0
+- Virtual Environment (optional, but recommended)
+
 ## Run Instructions
