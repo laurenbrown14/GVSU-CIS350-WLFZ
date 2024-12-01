@@ -23,7 +23,7 @@ The conecpt of out project is to allow users to input certain infomartion based 
 
 ## Run Instructions
 
-### Frontend
+## Frontend
 
 ### Installation
 
@@ -81,7 +81,7 @@ For a full list of dependencies, check out the `package.json` file.
 3. **Search**: Use the search feature to look for specific movies or TV shows.
 4. **View Details**: Tap on a movie to view detailed information.
 
-### Backend
+## Backend
 
 ### Installation
 1. Clone the repository:
@@ -108,7 +108,7 @@ For a full list of dependencies, check out the `package.json` file.
    python manage.py runserver
    ```
 
-## Endpoints
+### Endpoints
 
 ### Authentication
 - **`POST /api/login/`**: Allows users to log in and get a JWT token.
