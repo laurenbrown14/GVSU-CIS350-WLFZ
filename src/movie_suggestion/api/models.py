@@ -8,7 +8,7 @@ from movie_suggestion.settings import TMDB_API_URL_IMAGE
 
 
 class User(models.Model):
-    name = models.CharField(u'Name', max_length=50, unique=True, null=False, blank=False)
+    name = models.CharField(u'Name', max_length=50, null=False, blank=False)
     email = models.EmailField(u'e-mail', unique=True, db_index=True, max_length=80)
     birthday = models.DateField(u'Birthday')
     avatar = models.TextField(u'Avatar')

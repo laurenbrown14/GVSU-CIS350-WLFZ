@@ -1,3 +1,4 @@
+import ast
 from datetime import datetime, timedelta
 
 from rest_framework.views import APIView
@@ -7,7 +8,7 @@ from django.shortcuts import get_object_or_404
 # import datetime
 import requests
 import re
-from movie_suggestion.settings import TMDB_API_KEY, TMDB_API_URL
+from movie_suggestion.settings import TMDB_API_KEY, TMDB_API_URL, TMDB_API_URL_IMAGE
 from .auth_manager import LoginManager
 from .models import User, MovieRecommendation, Genre
 from .serializers import MovieRecommendationSerializer
@@ -45,10 +46,6 @@ def make_tmdb_request(endpoint, params=None):
 # View to get a movie recommendation for a specific user
 class GetMovieRecommendation(APIView):
     def get(self, request):
-
-        # from ipdb import set_trace
-        # set_trace()
-
         user = LoginManager().get_user_from_request(request)
         recommendations = MovieRecommendation.get_movies(user=user, movie_type=MovieRecommendation.RECOMMENDATION)
         if not recommendations:
@@ -134,6 +131,75 @@ class GetMoviesGenre(APIView):
         return Response(list(genres), status=status.HTTP_200_OK)
 
 
+class GetMovieDetails(APIView):
+    def get(self, request, movie_id):
+        # Call 1: Fetch movie details
+        data, status_code = make_tmdb_request(f"movie/{movie_id}")
+
+        if status_code == 200:
+            # Prepare movie details data
+            movie_data = {
+                'title': data.get('title') or data.get('original_title', 'N/A'),
+                'genres': [genre['name'] for genre in data.get('genres', [])],
+                'rating': data.get('vote_average', 'N/A'),
+                'overview': data.get('overview', 'N/A'),
+                'image': f"{TMDB_API_URL_IMAGE}{data.get('poster_path', 'N/A')}",
+                'release_date': data.get('release_date', 'N/A'),
+                'movie_id': data.get('id', 'N/A')
+            }
+
+            # Call 2: Fetch credits
+            credits_data, credits_status_code = make_tmdb_request(f"movie/{movie_id}/credits")
+            if credits_status_code == 200:
+                movie_data['stars'] = [
+                                          cast['name'] for cast in credits_data.get('cast', [])
+                                          if cast.get('known_for_department') == 'Acting' and not cast.get('job')
+                                      ][:5]
+                movie_data['director'] = next(
+                    (crew['name'] for crew in credits_data.get('crew', [])
+                     if crew.get('department') == 'Directing' and crew.get('job') == 'Director'),
+                    'N/A'
+                )
+                movie_data['writer'] = next(
+                    (crew['name'] for crew in credits_data.get('crew', [])
+                     if crew.get('department') == 'Writing' and crew.get('job') == 'Writer'),
+                    'N/A'
+                )
+
+            # Call 3: Fetch movie recommendations
+            recommendations_data, recommendations_status_code = make_tmdb_request(f"movie/{movie_id}/recommendations")
+            if recommendations_status_code == 200:
+                movie_data['more_like_this'] = [
+                                                   {
+                                                       'title': similar_movie.get('title') or similar_movie.get(
+                                                           'original_title', 'N/A'),
+                                                       'image': f"{TMDB_API_URL_IMAGE}{similar_movie.get('poster_path',
+                                                                                                         'N/A')}",
+                                                       'movie_id': similar_movie.get('id', 'N/A')
+                                                   } for similar_movie in recommendations_data.get('results', [])
+                                               ][:5]
+
+            return Response(movie_data, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Failed to fetch movie details from TMDB'}, status=status_code)
+
+
+# Helper function to make requests to the TMDB API
+def make_tmdb_request(endpoint, params=None):
+    """Helper function to make requests to the TMDB API."""
+    url = f"{TMDB_API_URL}/{endpoint}"
+    headers = {
+        "accept": "application/json",
+        "Authorization": TMDB_API_KEY
+    }
+    response = requests.get(url, headers=headers, params=params)
+
+    if response.status_code == 200:
+        return response.json(), 200
+    else:
+        return {'error': f"Failed to fetch data: {response.status_code}"}, response.status_code
+
+
 class LoginView(APIView):
     def post(self, request):
         email = request.data.get('email')
@@ -159,12 +225,18 @@ class LoginView(APIView):
 
 class SignUpView(APIView):
     def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
+        print(request.data)
+        data_dict = request.data
+        from ipdb import set_trace
+        # set_trace()
+        email = data_dict.get('email')
+        password = data_dict.get('password')
+        name = data_dict.get('name')
+        birthday = datetime.strptime(data_dict.get('birthday'), "%m/%d/%Y")
 
         # Validate required fields
-        if not email or not password:
-            return Response({'error': 'All fields are required: username, email, and password.'},
+        if not email or not password or not name or not birthday:
+            return Response({'error': 'All fields are required: email, and password.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         # Check if the email already exists
@@ -172,11 +244,13 @@ class SignUpView(APIView):
             return Response({'error': 'Email already in use.'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create the user
-        user = User(email=email)
+        user = User(email=email, name=name, birthday=birthday)
         user.set_password(password)
         user.save()
 
         # Generate a token for the new user
         token = LoginManager().generate_token(user)
+        print(token)
+        return Response({'token': token}, status=status.HTTP_201_CREATED)
 
-        return Response({'message': 'User created successfully.', 'token': token}, status=status.HTTP_201_CREATED)
+# return Response({'token': token}, status=status.HTTP_200_OK)
