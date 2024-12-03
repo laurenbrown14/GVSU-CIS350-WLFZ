@@ -18,8 +18,8 @@ The conecpt of out project is to allow users to input certain infomartion based 
 - **Ngrok** (optional, for tunneling API during development)
 
 ### Backend
-- Python 3.13.0
-- Virtual Environment (optional, but recommended)
+- **Python** 3.13.0
+- **Virtual Environment** (optional, but recommended)
 
 ## Run Instructions
 
