@@ -1,9 +1,9 @@
 #  Overview
-<Describe the purpose of this document in 1 paragraph of less … hint: it is
-your SRS>
+This document serves as the Software Requirements Specification (SRS) for the system. It outlines the system's functional and non-functional requirements, providing a detailed framework for its development, testing, and deployment. The purpose is to ensure all stakeholders have a clear understanding of what the system will do and the constraints under which it will operate.
+
 
 # Software Requirements
-<Describe the structure of this section >
+This section is divided into Functional Requirements and Non-Functional Requirements. For clarity and traceability, each requirement is categorized under specific system features or aspects.
 
 ## Functional Requirements
 
@@ -68,6 +68,7 @@ your SRS>
 
 # Software Artifacts
 
-Describe the purpose of this section
+This section outlines the various artifacts related to the system that serve as deliverables or documentation supporting development, testing, and deployment.
+
 * [Jira Board](https://wlfz.atlassian.net/jira/software/projects/WT/boards/2)
 * [Use Case Diagram](https://lucid.app/lucidchart/ac8b22e0-17c1-4def-9604-a0bee99ab5ee/edit?page=0_0#)
