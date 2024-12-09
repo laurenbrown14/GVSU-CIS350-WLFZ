@@ -254,3 +254,5 @@ class SignUpView(APIView):
         return Response({'token': token}, status=status.HTTP_201_CREATED)
 
 # return Response({'token': token}, status=status.HTTP_200_OK)
+
+
