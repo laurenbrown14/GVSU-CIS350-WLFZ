@@ -71,4 +71,4 @@ This section is divided into Functional Requirements and Non-Functional Requirem
 This section outlines the various artifacts related to the system that serve as deliverables or documentation supporting development, testing, and deployment.
 
 * [Jira Board](https://wlfz.atlassian.net/jira/software/projects/WT/boards/2)
-* [Use Case Diagram](https://lucid.app/lucidchart/ac8b22e0-17c1-4def-9604-a0bee99ab5ee/edit?page=0_0#)
+* [Use Case Diagram](https://github.com/laurenbrown14/GVSU-CIS350-WLFZ/blob/main/artifacts/use_case_diagram/use_case_diagram.pdf)
