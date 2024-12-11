@@ -3,7 +3,6 @@ from django.conf import settings
 from .models import User
 from datetime import datetime, timedelta
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.authentication import get_authorization_header
 
 
 class LoginManager:

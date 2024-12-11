@@ -90,11 +90,11 @@ For a full list of dependencies, check out the `package.json` file.
 
 ## Screenshots
 
-![Splash Screen](./assets/screenshots/splashscreen.png)
-![Login Screen](./assets/screenshots/login.png)
-![Sign Up Screen](./assets/screenshots/signup.png)
-![Home Screen](./assets/screenshots/home.png)
-![Detail Screen](./assets/screenshots/detail.png)
+![Splash Screen](assets/screenshots/splashscreen.png)
+![Login Screen](assets/screenshots/login.png)
+![Sign Up Screen](assets/screenshots/signup.png)
+![Home Screen](assets/screenshots/home.png)
+![Detail Screen](assets/screenshots/detail.png)
 
 ## Future Improvements
 

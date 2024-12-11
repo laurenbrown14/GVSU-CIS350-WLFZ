@@ -227,8 +227,6 @@ class SignUpView(APIView):
     def post(self, request):
         print(request.data)
         data_dict = request.data
-        from ipdb import set_trace
-        # set_trace()
         email = data_dict.get('email')
         password = data_dict.get('password')
         name = data_dict.get('name')
@@ -252,7 +250,3 @@ class SignUpView(APIView):
         token = LoginManager().generate_token(user)
         print(token)
         return Response({'token': token}, status=status.HTTP_201_CREATED)
-
-# return Response({'token': token}, status=status.HTTP_200_OK)
-
-
