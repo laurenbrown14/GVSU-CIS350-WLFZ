@@ -72,3 +72,5 @@ This section outlines the various artifacts related to the system that serve as 
 
 * [Jira Board](https://wlfz.atlassian.net/jira/software/projects/WT/boards/2)
 * [Use Case Diagram](https://github.com/laurenbrown14/GVSU-CIS350-WLFZ/blob/main/artifacts/use_case_diagram/use_case_diagram.pdf)
+* [Sequence Diagram](https://github.com/laurenbrown14/GVSU-CIS350-WLFZ/blob/main/artifacts/use_case_diagram/sequence_diagram%20.png)
+* [Class Diagram](https://github.com/laurenbrown14/GVSU-CIS350-WLFZ/blob/main/artifacts/use_case_diagram/class_diagram.png)
