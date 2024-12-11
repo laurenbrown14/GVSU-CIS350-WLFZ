@@ -72,7 +72,7 @@ Key dependencies used in the project are:
 - **React Native AsyncStorage**: Handles secure token storage for authentication.
 - **react-native-mask-input**: Used for formatting input fields such as the date of birth.
 
-For a full list of dependencies, check out the `package.json` file.
+For a full list of dependencies, check out the [package.json](https://github.com/laurenbrown14/GVSU-CIS350-WLFZ/blob/main/src/frontend/WLFZAppProject/package.json) file.
 
 ### How to Use
 
