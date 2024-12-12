@@ -10,7 +10,7 @@ This section is divided into Functional Requirements and Non-Functional Requirem
 ### <User Account Management>
 | ID | Requirement |
 | :-------------: | :----------: |
-| FR1 | The system shall allow users to create an account, log in, and manage their profile.> |
+| FR1 | The system shall allow users to create an account, log in, and manage their profile. |
 | FR2 | Users shall be able to update their preferences and interests (e.g., genre, actors, languages). |
 | FR3 | The system shall provide users with a search function to look up specific movies or actors. |
 | FR4 | The system shall allow users to save or bookmark movies for future viewing. |
